@@ -25,6 +25,23 @@ namespace Full_GRASP_And_SOLID.Library
             this.steps.Remove(step);
         }
 
+    public double GetProductionCost() /// El princpio que use para determinar el porque poner la clase en recipe fue GRASP,
+                                        ///  entendiendo que era la unica clase con acceso a toda la información de los productos usados por el usuario(INPUT)
+{
+    double totalCostInput = 0.0;
+    double totalCostProduct = 0.0;
+    double totalTotalCost = 0.0;
+
+    foreach (Step step in this.steps)
+    {
+        totalCostInput += step.Quantity * step.Input.UnitCost;
+        totalCostProduct += (step.Time/60) * step.Equipment.HourlyCost; 
+    }
+
+     totalTotalCost = totalCostInput + totalCostProduct;
+    return totalTotalCost;
+}
+
         public void PrintRecipe()
         {
             Console.WriteLine($"Receta de {this.FinalProduct.Description}:");
@@ -33,6 +50,8 @@ namespace Full_GRASP_And_SOLID.Library
                 Console.WriteLine($"{step.Quantity} de '{step.Input.Description}' " +
                     $"usando '{step.Equipment.Description}' durante {step.Time}");
             }
+            Console.WriteLine("Costo total: " + GetProductionCost());
+            
         }
     }
 }
